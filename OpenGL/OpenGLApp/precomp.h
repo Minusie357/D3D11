@@ -4,3 +4,5 @@
 #include <string>
 #include <memory>
 #include <cstdlib>
+#include <cmath>
+#include <numeric>
