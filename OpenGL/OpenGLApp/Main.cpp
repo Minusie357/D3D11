@@ -17,6 +17,7 @@ GLuint VBO{};
 GLuint IBO{};
 GLuint shader{};
 GLuint uniformModel{};
+GLuint uniformProjection{};
 
 bool direction = true;
 float triangleOffset = 0.f;
@@ -38,9 +39,10 @@ layout (location = 0) in vec3 pos;							\n\
 out vec4 vertColor;											\n\
                                                             \n\
 uniform mat4 modelMatrix;									\n\
+uniform mat4 projectionMatrix;								\n\
 void main()													\n\
 {															\n\
-	gl_Position = modelMatrix * vec4(pos, 1.0);				\n\
+	gl_Position = projectionMatrix * modelMatrix * vec4(pos, 1.0);\n\
 	vertColor = vec4(clamp(pos, 0.0f, 1.0f), 1.0f);			\n\
 }";
 
@@ -66,10 +68,10 @@ void CreateTriangle()
 	};
 	GLfloat vertices[] =
 	{
-		-1.f, -1.f, 0.f,
-		0.0F, -1.f, 1.f,
-		1.0f, -1.f, 0.f,
-		0.f, 1.f, 0.f
+		-1.0f, -1.0f, 0.0f,
+		0.0F, -1.0f, 1.0f,
+		1.0f, -1.0f, 0.0f,
+		0.0f, 1.0f, 0.0f
 	};
 
 	glGenVertexArrays(1, &VAO);
@@ -149,6 +151,7 @@ void CompileShaders()
 	}
 
 	uniformModel = glGetUniformLocation(shader, "modelMatrix");
+	uniformProjection = glGetUniformLocation(shader, "projectionMatrix");
 }
 
 int main()
@@ -193,6 +196,8 @@ int main()
 	glViewport(0, 0, bufferWidth, bufferHeight);
 	CreateTriangle();
 	CompileShaders();
+
+	glm::mat4 projection = glm::perspective(45.f, static_cast<GLfloat>(bufferWidth) / static_cast<GLfloat>(bufferHeight), 0.1f, 100.f);
 
 	while (glfwWindowShouldClose(mainWindow) == false)
 	{
@@ -240,11 +245,12 @@ int main()
 		glUseProgram(shader);
 
 		glm::mat4 modelMatrix{ 1.0f };
-		modelMatrix = glm::scale(modelMatrix, glm::vec3(0.4f, 0.4f, 1.0f));
-		//modelMatrix = glm::translate(modelMatrix, glm::vec3(triangleOffset, 0.f, 0.f));
+		modelMatrix = glm::translate(modelMatrix, glm::vec3(triangleOffset, 0.f, -2.5f));
 		modelMatrix = glm::rotate(modelMatrix, curAngle * toRadians, glm::vec3(0, 1, 0));
+		modelMatrix = glm::scale(modelMatrix, glm::vec3(0.4f, 0.4f, 1.0f));
 
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modelMatrix));
+		glUniformMatrix4fv(uniformProjection, 1, GL_FALSE, glm::value_ptr(projection));
 
 		glBindVertexArray(VAO);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
