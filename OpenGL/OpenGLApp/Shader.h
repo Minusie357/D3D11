@@ -10,6 +10,9 @@ public:
 
 public:
 	void CreateFromString(const std::string& vertexCode, const std::string& fragmentCode);
+	void CreateFromFiles(const std::string& vertexFileName, const std::string& fragmentFileName);
+	std::string ReadFile(const std::string& fileName);
+
 	void UseShader();
 	void ClearShader();
 
