@@ -57,6 +57,7 @@ void Shader::ClearShader()
 	shaderId = 0;
 	uniformModel = 0;
 	uniformProjection = 0;
+	uniformView = 0;
 }
 
 void Shader::_CompileShader(const std::string& vertexCode, const std::string& fragmentCode)
@@ -93,6 +94,7 @@ void Shader::_CompileShader(const std::string& vertexCode, const std::string& fr
 
 	uniformModel = glGetUniformLocation(shaderId, "modelMatrix");
 	uniformProjection = glGetUniformLocation(shaderId, "projectionMatrix");
+	uniformView = glGetUniformLocation(shaderId, "viewMatrix");
 }
 
 void Shader::_AddShader(GLuint program, const std::string& shaderCode, GLenum shaderType)

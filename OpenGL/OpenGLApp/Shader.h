@@ -18,6 +18,7 @@ public:
 
 	GLuint GetProjectionLocation() const { return uniformProjection; }
 	GLuint GetModelLocation() const { return uniformModel; }
+	GLuint GetViewLocation() const { return uniformView; }
 
 private:
 	void _CompileShader(const std::string& vertexCode, const std::string& fragmentCode);
@@ -27,5 +28,6 @@ private:
 	GLuint shaderId{};
 	GLuint uniformProjection{};
 	GLuint uniformModel{};
+	GLuint uniformView{};
 };
 
