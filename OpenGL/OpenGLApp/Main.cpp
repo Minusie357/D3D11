@@ -11,6 +11,7 @@
 #include "Mesh.h"
 #include "Shader.h"
 #include "Camera.h"
+#include "Texture.h"
 
 
 constexpr float toRadians = M_PI / 180.f;
@@ -19,6 +20,9 @@ Window mainWindow;
 std::vector<std::unique_ptr<Mesh>> meshes;
 std::vector<std::unique_ptr<Shader>> shaders;
 Camera camera;
+
+Texture brickTexture;
+Texture dirtTexture;
 
 GLfloat deltaTime = 0.0f;
 GLfloat lastTime = 0.0f;
@@ -38,10 +42,11 @@ void CreateObjects()
 	};
 	GLfloat vertices[] =
 	{
-		-1.0f, -1.0f, 0.0f,
-		0.0F, -1.0f, 1.0f,
-		1.0f, -1.0f, 0.0f,
-		0.0f, 1.0f, 0.0f
+		// x, y, z, u, v
+		-1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
+		0.0f, -1.0f, 1.0f, 0.5f, 0.0f,
+		1.0f, -1.0f, 0.0f, 1.f, 0.f,
+		0.0f, 1.0f, 0.0f, 0.5f, 1.f,
 	};
 
 	std::unique_ptr<Mesh> mesh1 = std::unique_ptr<Mesh>(new Mesh());
@@ -68,7 +73,12 @@ int main()
 	CreateObjects();
 	CreateShaders();
 
-	camera = Camera(glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 1.f, 0.f), -90.f, 0.f, 5.f, 1.f);
+	camera = Camera(glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 1.f, 0.f), -90.f, 0.f, 5.f, 0.4f);
+
+	brickTexture = Texture("../Resources/Textures/brick.png");
+	brickTexture.LoadTexture();
+	dirtTexture = Texture("../Resources/Textures/dirt.png");
+	dirtTexture.LoadTexture();
 
 	GLuint uniformProjection = 0;
 	GLuint uniformModel = 0;
@@ -101,12 +111,14 @@ int main()
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modelMatrix));
 		glUniformMatrix4fv(uniformProjection, 1, GL_FALSE, glm::value_ptr(projection));
 		glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(camera.GetViewMatrix()));
+		brickTexture.UseTexture();
 		meshes[0]->RenderMesh();
 
 		modelMatrix = glm::mat4{ 1.0f };
 		modelMatrix = glm::translate(modelMatrix, glm::vec3(0.0f, 0.5f, -2.5f));
 		modelMatrix = glm::scale(modelMatrix, glm::vec3(0.4f, 0.4f, 1.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modelMatrix));
+		dirtTexture.UseTexture();
 		meshes[1]->RenderMesh();
 
 		glUseProgram(0);
