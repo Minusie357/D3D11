@@ -12,6 +12,7 @@
 #include "Shader.h"
 #include "Camera.h"
 #include "Texture.h"
+#include "Light.h"
 
 
 constexpr float toRadians = M_PI / 180.f;
@@ -23,6 +24,8 @@ Camera camera;
 
 Texture brickTexture;
 Texture dirtTexture;
+
+Light mainLight;
 
 GLfloat deltaTime = 0.0f;
 GLfloat lastTime = 0.0f;
@@ -80,9 +83,14 @@ int main()
 	dirtTexture = Texture("../Resources/Textures/dirt.png");
 	dirtTexture.LoadTexture();
 
+	mainLight = Light(0.f, 1.f, 0.f, 0.2f);
+
 	GLuint uniformProjection = 0;
 	GLuint uniformModel = 0;
 	GLuint uniformView = 0;
+	GLuint uniformAmbientIntensity = 0;
+	GLuint uniformAmbientColour = 0;
+
 	glm::mat4 projection = glm::perspective(45.f, static_cast<GLfloat>(mainWindow.GetBufferWidth()) / static_cast<GLfloat>(mainWindow.GetBufferHeight()), 0.1f, 100.f);
 
 	while (mainWindow.GetShouldClose() == false)
@@ -104,7 +112,11 @@ int main()
 		uniformModel = shaders[0]->GetModelLocation();
 		uniformProjection = shaders[0]->GetProjectionLocation();
 		uniformView = shaders[0]->GetViewLocation();
+		uniformAmbientIntensity = shaders[0]->GetAmbientIntensityLocation();
+		uniformAmbientColour = shaders[0]->GetAmbientColourLocation();
 			
+		mainLight.UseLight(uniformAmbientIntensity, uniformAmbientColour);
+
 		glm::mat4 modelMatrix{ 1.0f };
 		modelMatrix = glm::translate(modelMatrix, glm::vec3(0.0f, 0.f, -2.5f));
 		modelMatrix = glm::scale(modelMatrix, glm::vec3(0.4f, 0.4f, 1.0f));

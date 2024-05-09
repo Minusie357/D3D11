@@ -95,6 +95,8 @@ void Shader::_CompileShader(const std::string& vertexCode, const std::string& fr
 	uniformModel = glGetUniformLocation(shaderId, "modelMatrix");
 	uniformProjection = glGetUniformLocation(shaderId, "projectionMatrix");
 	uniformView = glGetUniformLocation(shaderId, "viewMatrix");
+	uniformAmbientColour = glGetUniformLocation(shaderId, "directionalLight.colour");
+	uniformAmbientIntensity = glGetUniformLocation(shaderId, "directionalLight.ambientIntensity");
 }
 
 void Shader::_AddShader(GLuint program, const std::string& shaderCode, GLenum shaderType)

@@ -15,11 +15,11 @@ public:
 	void ClearTexture();
 
 private:
-	GLuint _TextureID{};
-	int _Width{};
-	int _Height{};
-	int _BitDepth{};
+	GLuint textureID{};
+	int width{};
+	int height{};
+	int bitDepth{};
 
-	std::string _FileName{};
+	std::string fileName{};
 };
 

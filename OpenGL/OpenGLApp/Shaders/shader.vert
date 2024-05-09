@@ -5,7 +5,6 @@ layout (location = 1) in vec2 tex;
 
 out vec4 vertColor;
 out vec2 TexCoord;
-
 uniform mat4 modelMatrix;
 uniform mat4 projectionMatrix;
 uniform mat4 viewMatrix;
