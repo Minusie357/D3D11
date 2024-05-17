@@ -18,3 +18,7 @@
 
 #include <cmath>
 #include <cstdlib>
+
+
+#include <gl/glew.h>
+#include <glm/glm.hpp>

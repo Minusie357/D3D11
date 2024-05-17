@@ -1,6 +1,4 @@
 #pragma once
-#include <GL/glew.h>
-#include <glm/glm.hpp>
 
 
 class Camera
@@ -8,9 +6,10 @@ class Camera
 public:
 	Camera() = default;
 	Camera(glm::vec3 startPosition, glm::vec3 startUpVector, GLfloat startYaw, GLfloat startPitch, GLfloat startMoveSpeed, GLfloat startTurnSpeed);
-	~Camera();
+	~Camera() = default;
 
 public:
+	glm::vec3 GetPosition() const { return position; }
 	glm::mat4 GetViewMatrix() const;
 
 public:

@@ -1,5 +1,4 @@
 #pragma once
-#include <GL/glew.h>
 
 
 class Shader
@@ -16,24 +15,37 @@ public:
 	void UseShader();
 	void ClearShader();
 
-	GLuint GetProjectionLocation() const { return uniformProjection; }
-	GLuint GetModelLocation() const { return uniformModel; }
-	GLuint GetViewLocation() const { return uniformView; }
+	GLint GetProjectionLocation() const { return uniformProjection; }
+	GLint GetModelLocation() const { return uniformModel; }
+	GLint GetViewLocation() const { return uniformView; }
+	GLint GetEyePosition() const { return uniformEyePosition; }
 
-	GLuint GetAmbientIntensityLocation() const { return uniformAmbientIntensity; }
-	GLuint GetAmbientColourLocation() const { return uniformAmbientColour; }
+	GLint GetAmbientIntensityLocation() const { return uniformAmbientIntensity; }
+	GLint GetAmbientColourLocation() const { return uniformAmbientColour; }
+	GLint GetDiffuseIntensity() const { return uniformDiffuseIntensity; }
+	GLint GetDirection() const { return uniformDirection; }
+
+	GLint GetSpecularIntensity() const { return uniformSpecularIntensity; }
+	GLint GetShininess() const { return uniformShininess; }
+
 
 private:
 	void _CompileShader(const std::string& vertexCode, const std::string& fragmentCode);
 	void _AddShader(GLuint program, const std::string& shaderCode, GLenum shaderType);
 
 private:
-	GLuint shaderId{};
-	GLuint uniformProjection{};
-	GLuint uniformModel{};
-	GLuint uniformView{};
+	GLint shaderId{};
+	GLint uniformProjection{};
+	GLint uniformModel{};
+	GLint uniformView{};
+	GLint uniformEyePosition{};
 
-	GLuint uniformAmbientIntensity{};
-	GLuint uniformAmbientColour{};
+	GLint uniformAmbientIntensity{};
+	GLint uniformAmbientColour{};
+	GLint uniformDiffuseIntensity{};
+	GLint uniformDirection{};
+
+	GLint uniformSpecularIntensity{};
+	GLint uniformShininess{};
 };
 

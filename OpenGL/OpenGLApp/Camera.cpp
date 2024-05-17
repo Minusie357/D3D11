@@ -14,10 +14,6 @@ Camera::Camera(glm::vec3 startPosition, glm::vec3 startWorldUpVector, GLfloat st
 	_Update();
 }
 
-Camera::~Camera()
-{
-}
-
 glm::mat4 Camera::GetViewMatrix() const
 {
 	return glm::lookAt(position, position + frontVector, upVector);;
