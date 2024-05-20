@@ -1,8 +1,34 @@
 #pragma once
+#include "DirectionalLight.h"
+#include "PointLight.h"
+#include "CommonValues.h"
 
 
 class Shader
 {
+private:
+	struct UniformDirectionalLight
+	{
+		GLint uniformColour;
+		GLint uniformAmbientIntensity;
+		GLint uniformDiffuseIntensity;
+
+		GLint uniformDirection;
+	};
+
+	struct UniformPointLight
+	{
+		GLint uniformColour;
+		GLint uniformAmbientIntensity;
+		GLint uniformDiffuseIntensity;
+
+		GLint uniformPosition;
+		GLint uniformConstant;
+		GLint uniformLinear;
+		GLint uniformExponent;
+	};
+
+
 public:
 	Shader() = default;
 	~Shader();
@@ -20,13 +46,16 @@ public:
 	GLint GetViewLocation() const { return uniformView; }
 	GLint GetEyePosition() const { return uniformEyePosition; }
 
-	GLint GetAmbientIntensityLocation() const { return uniformAmbientIntensity; }
-	GLint GetAmbientColourLocation() const { return uniformAmbientColour; }
-	GLint GetDiffuseIntensity() const { return uniformDiffuseIntensity; }
-	GLint GetDirection() const { return uniformDirection; }
+	GLint GetAmbientIntensityLocation() const { return uniformDirectinoalLight.uniformAmbientIntensity; }
+	GLint GetAmbientColourLocation() const { return uniformDirectinoalLight.uniformColour; }
+	GLint GetDiffuseIntensity() const { return uniformDirectinoalLight.uniformDiffuseIntensity; }
+	GLint GetDirection() const { return uniformDirectinoalLight.uniformDirection; }
 
 	GLint GetSpecularIntensity() const { return uniformSpecularIntensity; }
 	GLint GetShininess() const { return uniformShininess; }
+
+	void SetDirectionalLight(DirectionalLight* light);
+	void SetPointLight(PointLight* light, size_t numsOfLight);
 
 
 private:
@@ -40,12 +69,15 @@ private:
 	GLint uniformView{};
 	GLint uniformEyePosition{};
 
-	GLint uniformAmbientIntensity{};
-	GLint uniformAmbientColour{};
-	GLint uniformDiffuseIntensity{};
-	GLint uniformDirection{};
+	UniformDirectionalLight uniformDirectinoalLight{};
+	GLint uniformnumsOfPointLight{};
+	std::array<UniformPointLight, MAX_NUMS_OF_POINT_LIGHT> uniformPointLights{};
 
 	GLint uniformSpecularIntensity{};
 	GLint uniformShininess{};
+
+
+private:
+	size_t numsOfPointLight{};
 };
 
