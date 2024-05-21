@@ -78,7 +78,7 @@ void Shader::SetPointLight(PointLight* light, size_t numsOfLight)
 	}
 
 	numsOfLight = std::min(numsOfLight, MAX_NUMS_OF_POINT_LIGHT);
-	glUniform1i(uniformnumsOfPointLight, numsOfLight);
+	glUniform1i(uniformNumsOfPointLight, numsOfLight);
 
 	for (auto index = 0; index < numsOfLight; ++index)
 	{
@@ -91,6 +91,32 @@ void Shader::SetPointLight(PointLight* light, size_t numsOfLight)
 			uniformPointLight.uniformConstant, 
 			uniformPointLight.uniformLinear, 
 			uniformPointLight.uniformExponent);
+	}
+}
+
+void Shader::SetSpotLight(SpotLight* light, size_t numsOfLight)
+{
+	if (light == nullptr)
+	{
+		return;
+	}
+
+	numsOfLight = std::min(numsOfLight, MAX_NUMS_OF_SPOT_LIGHT);
+	glUniform1i(uniformNumsOfSpotLight, numsOfLight);
+
+	for (auto index = 0; index < numsOfLight; ++index)
+	{
+		auto uniformSpotLight = uniformSpotLights[index];
+		light[index].UseLight(
+			uniformSpotLight.uniformAmbientIntensity,
+			uniformSpotLight.uniformColour,
+			uniformSpotLight.uniformDiffuseIntensity,
+			uniformSpotLight.uniformPosition,
+			uniformSpotLight.uniformDirection,
+			uniformSpotLight.uniformConstant,
+			uniformSpotLight.uniformLinear,
+			uniformSpotLight.uniformExponent,
+			uniformSpotLight.uniformEdge);
 	}
 }
 
@@ -139,7 +165,8 @@ void Shader::_CompileShader(const std::string& vertexCode, const std::string& fr
 	uniformShininess = glGetUniformLocation(shaderId, "material.shininess");
 	uniformEyePosition = glGetUniformLocation(shaderId, "eyePosition");
 
-	uniformnumsOfPointLight = glGetUniformLocation(shaderId, "pointLightCount");
+	// PointLight
+	uniformNumsOfPointLight = glGetUniformLocation(shaderId, "pointLightCount");
 	for (auto index = 0; index < MAX_NUMS_OF_POINT_LIGHT; ++index)
 	{
 		uniformPointLights[index].uniformColour = glGetUniformLocation(shaderId, std::format("pointLights[{}].base.colour", index).c_str());
@@ -149,6 +176,21 @@ void Shader::_CompileShader(const std::string& vertexCode, const std::string& fr
 		uniformPointLights[index].uniformConstant = glGetUniformLocation(shaderId, std::format("pointLights[{}].constant", index).c_str());
 		uniformPointLights[index].uniformLinear = glGetUniformLocation(shaderId, std::format("pointLights[{}].linear", index).c_str());
 		uniformPointLights[index].uniformExponent = glGetUniformLocation(shaderId, std::format("pointLights[{}].exponent", index).c_str());
+	}
+
+	// SpotLight
+	uniformNumsOfSpotLight = glGetUniformLocation(shaderId, "spotLightCount");
+	for (auto index = 0; index < MAX_NUMS_OF_SPOT_LIGHT; ++index)
+	{
+		uniformSpotLights[index].uniformColour = glGetUniformLocation(shaderId, std::format("spotLights[{}].base.base.colour", index).c_str());
+		uniformSpotLights[index].uniformAmbientIntensity = glGetUniformLocation(shaderId, std::format("spotLights[{}].base.base.ambientIntensity", index).c_str());
+		uniformSpotLights[index].uniformDiffuseIntensity = glGetUniformLocation(shaderId, std::format("spotLights[{}].base.base.diffuseIntensity", index).c_str());
+		uniformSpotLights[index].uniformPosition = glGetUniformLocation(shaderId, std::format("spotLights[{}].base.position", index).c_str());
+		uniformSpotLights[index].uniformConstant = glGetUniformLocation(shaderId, std::format("spotLights[{}].base.constant", index).c_str());
+		uniformSpotLights[index].uniformLinear = glGetUniformLocation(shaderId, std::format("spotLights[{}].base.linear", index).c_str());
+		uniformSpotLights[index].uniformExponent = glGetUniformLocation(shaderId, std::format("spotLights[{}].base.exponent", index).c_str());
+		uniformSpotLights[index].uniformDirection = glGetUniformLocation(shaderId, std::format("spotLights[{}].direction", index).c_str());
+		uniformSpotLights[index].uniformEdge = glGetUniformLocation(shaderId, std::format("spotLights[{}].edge", index).c_str());
 	}
 }
 

@@ -1,7 +1,8 @@
 #pragma once
+#include "CommonValues.h"
 #include "DirectionalLight.h"
 #include "PointLight.h"
-#include "CommonValues.h"
+#include "SpotLight.h"
 
 
 class Shader
@@ -26,6 +27,21 @@ private:
 		GLint uniformConstant;
 		GLint uniformLinear;
 		GLint uniformExponent;
+	};
+
+	struct UniformSpotLight
+	{
+		GLint uniformColour;
+		GLint uniformAmbientIntensity;
+		GLint uniformDiffuseIntensity;
+
+		GLint uniformPosition;
+		GLint uniformDirection;
+
+		GLint uniformConstant;
+		GLint uniformLinear;
+		GLint uniformExponent;
+		GLint uniformEdge;
 	};
 
 
@@ -56,6 +72,7 @@ public:
 
 	void SetDirectionalLight(DirectionalLight* light);
 	void SetPointLight(PointLight* light, size_t numsOfLight);
+	void SetSpotLight(SpotLight* light, size_t numsOfLight);
 
 
 private:
@@ -70,8 +87,11 @@ private:
 	GLint uniformEyePosition{};
 
 	UniformDirectionalLight uniformDirectinoalLight{};
-	GLint uniformnumsOfPointLight{};
+	GLint uniformNumsOfPointLight{};
 	std::array<UniformPointLight, MAX_NUMS_OF_POINT_LIGHT> uniformPointLights{};
+
+	GLint uniformNumsOfSpotLight{};
+	std::array<UniformSpotLight, MAX_NUMS_OF_SPOT_LIGHT> uniformSpotLights{};
 
 	GLint uniformSpecularIntensity{};
 	GLint uniformShininess{};
@@ -79,5 +99,6 @@ private:
 
 private:
 	size_t numsOfPointLight{};
+	size_t numsOfSpotLight{};
 };
 

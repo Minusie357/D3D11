@@ -13,6 +13,7 @@
 #include "CommonValues.h"
 #include "DirectionalLight.h"
 #include "PointLight.h"
+#include "SpotLight.h"
 #include "Material.h"
 
 
@@ -29,6 +30,7 @@ Texture plainTexture;
 
 DirectionalLight mainLight;
 std::vector<PointLight> pointLights;
+std::vector<SpotLight> spotLights;
 
 Material shinyMaterial;
 Material dullMaterial;
@@ -164,21 +166,36 @@ int main()
 	dullMaterial = Material(0.3f, 4);
 	mainLight = DirectionalLight(
 		1.0f, 1.0f, 1.0f, 
-		0.0f, 0.0f, 
+		0.2f, 0.0f, 
 		0.0f, 0.0f, -1.0f);
 
 	pointLights.push_back(
 		PointLight(
 			0.0f, 0.0f, 1.0f,
-			0.0f, 1.0f,
+			0.1f, 0.1f,
 			0.0f, 0.0f, 0.0f,
 			0.3f, 0.2f, 0.1f));
 	pointLights.push_back(
 		PointLight(
 			0.0f, 1.0f, 0.0f,
-			0.0f, 1.0f,
+			0.0f, 0.1f,
 			-4.0f, 2.0f, 0.0f,
 			0.3f, 0.1f, 0.1f));
+
+	spotLights.push_back(
+		SpotLight(
+			1.0f, 1.0f, 1.0f,
+			0.0f, 1.0f,
+			0.0f, 0.0f, 0.0f,
+			0.0f, -1.0f, 0.0f,
+			1.0f, 0.0f, 0.0f, 20.0f));
+	spotLights.push_back(
+		SpotLight(
+			1.0f, 1.0f, 1.0f,
+			0.0f, 1.0f,
+			0.0f, 1.5f, 0.0f,
+			-100.0f, -1.0f, 0.0f,
+			1.0f, 0.0f, 0.0f, 20.0f));
 
 
 	GLuint uniformProjection = 0;
@@ -215,6 +232,7 @@ int main()
 		
 		shaders[0]->SetDirectionalLight(&mainLight);
 		shaders[0]->SetPointLight(pointLights.data(), pointLights.size());
+		shaders[0]->SetSpotLight(spotLights.data(), spotLights.size());
 
 		auto cameraPosition = camera.GetPosition();
 		glUniformMatrix4fv(uniformProjection, 1, GL_FALSE, glm::value_ptr(projection));

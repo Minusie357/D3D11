@@ -10,9 +10,9 @@ public:
 	~PointLight() = default;
 
 public:
-	void UseLight(GLuint ambientIntensityLocation, GLuint ambientColourLocation, GLuint diffuseIntensityLocation, GLuint positionLocation, GLfloat constantLocation, GLfloat linearLocation, GLfloat exponentLocation);
+	void UseLight(GLint ambientIntensityLocation, GLint ambientColourLocation, GLint diffuseIntensityLocation, GLint positionLocation, GLint constantLocation, GLint linearLocation, GLint exponentLocation);
 
-private:
+protected:
 	glm::vec3 position{};
 
 	// ax^2 + bx + c
