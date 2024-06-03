@@ -12,6 +12,8 @@ public:
 public:
 	void UseLight(GLint ambientIntensityLocation, GLint ambientColourLocation, GLint diffuseIntensityLocation, GLint positionLocation, GLint directionLocation, GLint constantLocation, GLint linearLocation, GLint exponentLocation, GLint edgeLocation);
 
+	void SetFlash(glm::vec3 inPosition, glm::vec3 inDirection);
+
 private:
 	glm::vec3 direction{ 0.f, -1.f, 0.f };
 

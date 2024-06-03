@@ -97,9 +97,9 @@ void CreateObjects()
 	GLfloat vertices[] =
 	{
 		// x,	 y,		z,			u,		v,			nx,		ny,		nz
-		-1.0f,	-1.0f,	0.0f,		0.0f,	0.0f,		0.f,	0.f,	0.f,
+		-1.0f,	-1.0f,	-0.6f,		0.0f,	0.0f,		0.f,	0.f,	0.f,
 		0.0f,	-1.0f,	1.0f,		0.5f,	0.0f,		0.f,	0.f,	0.f,
-		1.0f,	-1.0f,	0.0f,		1.f,	0.f,		0.f,	0.f,	0.f,
+		1.0f,	-1.0f,	-0.6f,		1.f,	0.f,		0.f,	0.f,	0.f,
 		0.0f,	1.0f,	0.0f,		0.5f,	1.f,		0.f,	0.f,	0.f,
 	};
 
@@ -166,13 +166,13 @@ int main()
 	dullMaterial = Material(0.3f, 4);
 	mainLight = DirectionalLight(
 		1.0f, 1.0f, 1.0f, 
-		0.2f, 0.0f, 
+		0.1f, 0.1f, 
 		0.0f, 0.0f, -1.0f);
 
 	pointLights.push_back(
 		PointLight(
 			0.0f, 0.0f, 1.0f,
-			0.1f, 0.1f,
+			0.0f, 0.1f,
 			0.0f, 0.0f, 0.0f,
 			0.3f, 0.2f, 0.1f));
 	pointLights.push_back(
@@ -185,7 +185,7 @@ int main()
 	spotLights.push_back(
 		SpotLight(
 			1.0f, 1.0f, 1.0f,
-			0.0f, 1.0f,
+			0.0f, 2.0f,
 			0.0f, 0.0f, 0.0f,
 			0.0f, -1.0f, 0.0f,
 			1.0f, 0.0f, 0.0f, 20.0f));
@@ -229,6 +229,10 @@ int main()
 		uniformEyePosition = shaders[0]->GetEyePosition();
 		uniformSpecularIntensity = shaders[0]->GetSpecularIntensity();
 		uniformShininess = shaders[0]->GetShininess();
+
+		glm::vec3 lowerLight = camera.GetPosition();
+		lowerLight.y -= 0.3f;
+		spotLights[0].SetFlash(lowerLight, camera.GetDirection());
 		
 		shaders[0]->SetDirectionalLight(&mainLight);
 		shaders[0]->SetPointLight(pointLights.data(), pointLights.size());
@@ -256,7 +260,7 @@ int main()
 		modelMatrix = glm::mat4{ 1.0f };
 		modelMatrix = glm::translate(modelMatrix, glm::vec3(0.0f, -2.0f, -0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modelMatrix));
-		plainTexture.UseTexture();
+		dirtTexture.UseTexture();
 		shinyMaterial.UseMaterial(uniformSpecularIntensity, uniformShininess);
 		meshes[2]->RenderMesh();
 

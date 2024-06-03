@@ -10,6 +10,7 @@ public:
 
 public:
 	glm::vec3 GetPosition() const { return position; }
+	glm::vec3 GetDirection() const { return glm::normalize(frontVector); }
 	glm::mat4 GetViewMatrix() const;
 
 public:
